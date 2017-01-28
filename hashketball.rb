@@ -1,5 +1,3 @@
-require "pry"
-
 def game_hash
   game_hash = {
     home:{
@@ -100,4 +98,94 @@ def big_shoe_rebounds
     end
   end
   return wilt_rebs
+end
+
+##############################################
+################ OVERTIME!!!! ################
+##############################################
+
+def most_points_scored
+  wilt_points = nil
+  wilt_name = nil
+
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player_name, stat|
+
+      ## This part adapted from the key-for-min-value lab & #big_shoe_rebounds
+      if wilt_points == nil || wilt_points < stat[:points]
+        wilt_points = stat[:points]
+        wilt_name = player_name
+      end
+    end
+  end
+  return wilt_name
+end
+
+def winning_team
+  home_points = 0
+  away_points = 0
+
+  game_hash.each do |location, team_data|
+    if location == :home
+      team_data[:players].each do |player_name, stat|
+        home_points += stat[:points]
+      end
+    elsif location == :away
+      team_data[:players].each do |player_name, stat|
+        away_points += stat[:points]
+      end
+    end
+  end
+
+  if home_points > away_points
+    return game_hash[:home][:team_name]
+  elsif home_points > away_points
+    return game_hash[:away][:team_name]
+  elsif home_points == away_points
+    return "OVERTIME!!!"
+  end
+
+end
+
+def longest_name
+  antetokounmpo_array = []
+  giannis = nil
+
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player_name, stat|
+      antetokounmpo_array << player_name
+      antetokounmpo_array.sort_by! { |name| name.length }
+      giannis = antetokounmpo_array[-1]
+    end
+  end
+  return giannis
+end
+
+def long_name_steals_a_ton
+  antetokounmpo_array = []
+  giannis = nil
+  stockton_steals = nil
+  john = nil
+
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player_name, stat|
+
+      ## This part adapted from the key-for-min-value lab & #big_shoe_rebounds
+      if stockton_steals == nil || stockton_steals < stat[:steals]
+        stockton_steals = stat[:steals]
+        john = player_name
+      end
+
+      antetokounmpo_array << player_name
+      antetokounmpo_array.sort_by! { |name| name.length }
+      giannis = antetokounmpo_array[-1]
+    end
+  end
+
+  if john == giannis
+    true
+  else
+    false
+  end
+
 end
